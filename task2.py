@@ -1,7 +1,8 @@
-import csv
-import asyncio
 from bs4 import BeautifulSoup
 import aiohttp
+
+import csv
+import asyncio
 
 from string import ascii_uppercase
 
@@ -48,7 +49,6 @@ class WikiParser:
             list_animals = [1 for i in list_animals if i[0] == letter]
 
             WikiParser.DICT_COUNTER[letter_for_check] += len(list_animals)
-            print(letter_for_check)
 
             params = {'title': 'Категория:Животные_по_алфавиту', 'pagefrom': animals[-1]}
             text = await WikiParser.get_text_from_url(params, session)
