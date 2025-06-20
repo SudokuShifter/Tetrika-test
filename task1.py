@@ -1,5 +1,5 @@
+import unittest
 import inspect
-import pytest
 
 
 def strict(func):
@@ -20,44 +20,48 @@ def sum(a: int, b: int = 0):
     return a + b
 
 
-def test_sum_correct():
-    assert sum(1, 2) == 3
-    assert sum(1, -2) == -1
-    assert sum(5) == 5  # default b
-    assert sum(a=3, b=4) == 7
-    assert sum(b=4, a=3) == 7
-    assert sum(a=3) == 3
+class TestStrictDecorator(unittest.TestCase):
+    def test_sum_correct(self):
+        self.assertEqual(sum(1, 2), 3)
+        self.assertEqual(sum(1, -2), -1)
+        self.assertEqual(sum(5), 5)  # default b
+        self.assertEqual(sum(a=3, b=4), 7)
+        self.assertEqual(sum(b=4, a=3), 7)
+        self.assertEqual(sum(a=3), 3)
 
-def test_sum_type_error():
-    with pytest.raises(TypeError):
-        sum(1, 2.15)
-    with pytest.raises(TypeError):
-        sum(1, '2.15')
-    with pytest.raises(TypeError):
-        sum('1', 2)
-    with pytest.raises(TypeError):
-        sum(a=1, b='2')
-    with pytest.raises(TypeError):
-        sum(a='1', b=2)
-    with pytest.raises(TypeError):
-        sum('1', '2')
-    with pytest.raises(TypeError):
-        sum(a=1.5, b=2)
-    with pytest.raises(TypeError):
-        sum(a=1, b=2.5)
+    def test_sum_type_error(self):
+        with self.assertRaises(TypeError):
+            sum(1, 2.15)
+        with self.assertRaises(TypeError):
+            sum(1, '2.15')
+        with self.assertRaises(TypeError):
+            sum('1', 2)
+        with self.assertRaises(TypeError):
+            sum(a=1, b='2')
+        with self.assertRaises(TypeError):
+            sum(a='1', b=2)
+        with self.assertRaises(TypeError):
+            sum('1', '2')
+        with self.assertRaises(TypeError):
+            sum(a=1.5, b=2)
+        with self.assertRaises(TypeError):
+            sum(a=1, b=2.5)
 
-def test_sum_missing_argument():
-    with pytest.raises(TypeError):
-        sum()
+    def test_sum_missing_argument(self):
+        with self.assertRaises(TypeError):
+            sum()
 
-def test_sum_extra_argument():
-    with pytest.raises(TypeError):
-        sum(1, 2, 3)
-    with pytest.raises(TypeError):
-        sum(a=1, b=2, c=3)
+    def test_sum_extra_argument(self):
+        with self.assertRaises(TypeError):
+            sum(1, 2, 3)
+        with self.assertRaises(TypeError):
+            sum(a=1, b=2, c=3)
 
-def test_sum_kwargs():
-    assert sum(**{'a': 2, 'b': 3}) == 5
-    assert sum(**{'a': 2}) == 2
-    with pytest.raises(TypeError):
-        sum(**{'a': 2, 'b': '3'})
+    def test_sum_kwargs(self):
+        self.assertEqual(sum(**{'a': 2, 'b': 3}), 5)
+        self.assertEqual(sum(**{'a': 2}), 2)
+        with self.assertRaises(TypeError):
+            sum(**{'a': 2, 'b': '3'})
+
+if __name__ == "__main__":
+    unittest.main()
