@@ -45,7 +45,7 @@ class TestStrictDecorator(unittest.TestCase):
         with self.assertRaises(TypeError):
             sum(a=1.5, b=2)
         with self.assertRaises(TypeError):
-            sum(a=1, b=2.5)
+            sum(a=[1, 2], b=2.5)
 
     def test_sum_missing_argument(self):
         with self.assertRaises(TypeError):
